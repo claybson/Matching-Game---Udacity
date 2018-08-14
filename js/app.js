@@ -1,6 +1,12 @@
 /*
  * Create a list that holds all of your cards
  */
+ cards = [];
+let deck = document.querySelector('.deck')
+cont = deck.childNodes;
+for (var i=0; i<=cont.length; i++) {
+	cards[i] = cont[i];
+}
 
 
 /*
@@ -26,6 +32,14 @@ function shuffle(array) {
 }
 
 
+function start() {
+	cards = shuffle(cards);
+	for(var i=0; i < cards.length; i++) {
+		cards.forEach(function (item) {
+			document.querySelector('.deck').appendChild(item);
+		});
+	}
+}
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
