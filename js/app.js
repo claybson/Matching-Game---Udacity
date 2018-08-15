@@ -40,6 +40,37 @@ function start() {
 		});
 	}
 }
+
+let y = ""
+let carta1 = "";
+let carta2 = "";
+function openCart () {
+	if (y<1){
+		carta1 = $(this);
+		carta1.addClass('open show');
+		y++;
+	}else {
+		carta2 = $(this);
+		carta2.addClass('open show');
+		y = 0;
+		checkCart();
+	}
+}
+
+function checkCart () {
+	if(carta1.children().attr('class') == carta2.children().attr('class')) {
+		carta1.addClass('match');
+		carta2.addClass('match');
+	}else {
+		setTimeout(function() { 
+			carta1.removeClass('open show');
+			carta2.removeClass('open show');
+		}, 2000);
+		
+	}
+}
+
+$('.card').click(openCart);
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
