@@ -44,29 +44,66 @@ function start() {
 let y = ""
 let carta1 = "";
 let carta2 = "";
-function openCart () {
-	if (y<1){
-		carta1 = $(this);
-		carta1.addClass('open show');
-		y++;
-	}else {
-		carta2 = $(this);
-		carta2.addClass('open show');
-		y = 0;
-		checkCart();
+let time = "";
+let clicks = 0;
+let matches = 0;
+let pontos = 0;
+var estrela = 0;
+var openCart = function() {
+	time = performance.now();
+		if(!$(this).hasClass('match')){
+			clicks = clicks+1;
+			if (y<1){
+				carta1 = $(this);
+				carta1.addClass('open show');
+				y++;
+			}else if(!$(this).hasClass('open show')) {
+				carta2 = $(this);
+				carta2.addClass('open show');
+				y = 0;
+				checkCart();
+			}
+		}
+}
+
+
+function checkCart () {
+	if ((carta1 != "") & (carta2 != "")) {
+		console.log('entrou');
+		if(carta1.children().attr('class') == carta2.children().attr('class')) {
+			carta1.addClass('match');
+			carta1.removeClass('open show');
+			carta2.addClass('match');
+			carta2.removeClass('open show');
+			matches = matches+1;
+		}else {
+			setTimeout(function() { 
+				carta1.removeClass('open show');
+				carta2.removeClass('open show');
+			}, 500);
+		}
+	}
+	
+	if(matches == 8) {
+		result();
+	}else{
+		console.log('continuaa...');
 	}
 }
 
-function checkCart () {
-	if(carta1.children().attr('class') == carta2.children().attr('class')) {
-		carta1.addClass('match');
-		carta2.addClass('match');
-	}else {
-		setTimeout(function() { 
-			carta1.removeClass('open show');
-			carta2.removeClass('open show');
-		}, 2000);
-		
+function result () {
+	pontos = (time/clicks).toFixed(2);
+	if(pontos <= 1000.00) {
+		estrela = 3;
+	}else if(pontos <= 1100.00){
+		estrela = 2;
+	}else{
+		estrela = 1;
+	}
+
+	for(var i=0; i < estrela; i++){
+		console.log(estrela);
+		$('.stars').append('<li><i class="fa fa-star"></i></li>');
 	}
 }
 
