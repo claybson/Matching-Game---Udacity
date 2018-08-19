@@ -1,12 +1,25 @@
 /*
  * Create a list that holds all of your cards
  */
+
+/*VARIAVEIS*/
+let y = ""
+let carta1 = "";
+let carta2 = "";
+let time = "";
+let clicks = 0;
+let matches = 0;
+let pontos = 0;
+var estrela = 0;
+let segundos = 0;
+let minutos = 0;
  cards = [];
 let deck = document.querySelector('.deck')
 cont = deck.childNodes;
 for (var i=0; i<=cont.length; i++) {
 	cards[i] = cont[i];
 }
+
 
 
 /*
@@ -31,42 +44,37 @@ function shuffle(array) {
     return array;
 }
 
-
+/*REINICIA O JOGO*/
 function start() {
 	cards = shuffle(cards);
+	$('.card').removeClass('open show match');
 	for(var i=0; i < cards.length; i++) {
 		cards.forEach(function (item) {
-			document.querySelector('.deck').appendChild(item);
+			$('.deck').append(item);
 		});
 	}
 }
 
-let y = ""
-let carta1 = "";
-let carta2 = "";
-let time = "";
-let clicks = 0;
-let matches = 0;
-let pontos = 0;
-var estrela = 0;
-var openCart = function() {
+
+/*APLICA AS CLASSES PARA ABRIR AS CARTAS SELECIONADAS*/
+function openCart () {
 	time = performance.now();
-		if(!$(this).hasClass('match')){
-			clicks = clicks+1;
-			if (y<1){
-				carta1 = $(this);
-				carta1.addClass('open show');
-				y++;
-			}else if(!$(this).hasClass('open show')) {
-				carta2 = $(this);
-				carta2.addClass('open show');
-				y = 0;
-				checkCart();
-			}
+	if(!$(this).hasClass('match')){
+		clicks = clicks+1;
+		if (y<1){
+			carta1 = $(this);
+			carta1.addClass('open show');
+			y++;
+		}else if(!$(this).hasClass('open show')) {
+			carta2 = $(this);
+			carta2.addClass('open show');
+			y = 0;
+			checkCart();
 		}
+	}
 }
 
-
+/*VERIFICA SE AS CARTAS SÃO IGUAIS E APLICA A CLASSE MATCH*/
 function checkCart () {
 	if ((carta1 != "") & (carta2 != "")) {
 		console.log('entrou');
@@ -86,11 +94,10 @@ function checkCart () {
 	
 	if(matches == 8) {
 		result();
-	}else{
-		console.log('continuaa...');
 	}
 }
 
+/*VERIFICA SE TODOS OS PARES FORAM ENCONTRADOS E CALCULA O RESULTADO (CLIQUES, TEMPO, E ESTRELAS) EXIBINDO O MODAL*/
 function result () {
 	pontos = (time/clicks).toFixed(2);
 	if(pontos <= 1000.00) {
@@ -105,8 +112,17 @@ function result () {
 		console.log(estrela);
 		$('.stars').append('<li><i class="fa fa-star"></i></li>');
 	}
+
+	var calc = ((time/1000)%60).toFixed(0);
+	minutos  = ((time/60000)%60).toFixed(0); 
+	segundos = (calc%60);
+
+	$('.timer').html("Tempo: "+minutos+" minutos e "+segundos+" segundos"); 
+	$('.clicks').html("Total de cliques: "+clicks);
+	$('.modal').slideDown();
 }
 
+/*CHAMA A FUNÇÃO openCart QUANDO UMA CARTA É CLICADA*/
 $('.card').click(openCart);
 /*
  * set up the event listener for a card. If a card is clicked:

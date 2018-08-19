@@ -5,32 +5,41 @@
     <title>Matching Game</title>
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
     <div class="container">
+        <div class="modal">
+            <h2 class="title">congratulations</h2>
+            <span class="timer"></span>
+            <span class="clicks"></span>
+            <ul class="stars">
+            </ul>
+            <div class="restart" onclick="start()">
+                Reiniciar <i class="fa fa-repeat"></i>
+            </div>
+
+        </div>
         <header>
             <h1>Matching Game</h1>
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
+            <ul class="stars">
+            </ul>
 
-        	<span class="moves">3</span> Moves
+            <span class="moves">3</span> Moves
 
             <div class="restart" onclick="start()">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fa fa-repeat"></i>
+            </div>
         </section>
 
         <ul class="deck">
-            <li class="card match">
+            <li class="card">
                 <i class="fa fa-diamond"></i>
             </li>
             <li class="card">
@@ -54,7 +63,7 @@
             <li class="card">
                 <i class="fa fa-bicycle"></i>
             </li>
-            <li class="card match">
+            <li class="card">
                 <i class="fa fa-diamond"></i>
             </li>
             <li class="card">
