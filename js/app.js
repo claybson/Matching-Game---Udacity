@@ -63,6 +63,7 @@ function start() {
 	y = ""
 	carta1 = "";
 	carta2 = "";
+	t0 = 0;
 	time = 0;
 	clicks = 0;
 	estrela = 0;
@@ -145,15 +146,9 @@ function result () {
 	time = performance.now() - t0;
 
 	var calc = ((time/1000)%60).toFixed(0);
-	if (restart == true) {
-		minutos  = ((((time/60000)%60).toFixed(0)) - 1); 
-	}else {
-		minutos  = ((time/60000)%60).toFixed(0); 
-	}
-	
+	minutos  = ((time/60000)%60).toFixed(0); 
 	segundos = (calc%60);
 
-	console.log(time);
 
 	$('.moves').html(estrela);
 	$('.timer').html("Tempo: "+minutos+" minutos e "+segundos+" segundos"); 
@@ -162,11 +157,8 @@ function result () {
 }
 
 function initGame () {
-	if((init != true) & (restart == false)) {
+	if(init != true) {
 		t0 = performance.now();
-	}else if((init != true) & (restart == true)) {
-		t0 = performance.now();
-		console.log('restart true');
 	}
 	init = true;
 }
