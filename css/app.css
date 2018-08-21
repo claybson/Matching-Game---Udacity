@@ -130,6 +130,10 @@ h1 {
     margin-bottom: 10px;
 }
 
+.score-panel span {
+    margin-right: 20px;
+}
+
 .score-panel .stars {
     margin: 0;
     padding: 0;
@@ -145,4 +149,12 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+    background: #294552;
+    color: #fff;
+}
+
+.restart {
+    background: #02ccba;
+    color: #fff;
+    padding: 5px 10px;
 }

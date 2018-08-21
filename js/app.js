@@ -3,22 +3,25 @@
  */
 
 /*VARIAVEIS*/
+let t0 = 0;
+let t1 = 0;
 let y = ""
 let carta1 = "";
 let carta2 = "";
-let time = "";
+let time = 0;
 let clicks = 0;
 let matches = 0;
-let pontos = 0;
 var estrela = 0;
 let segundos = 0;
 let minutos = 0;
- cards = [];
+let cards = [];
 let deck = document.querySelector('.deck')
 cont = deck.childNodes;
 for (var i=0; i<=cont.length; i++) {
 	cards[i] = cont[i];
 }
+let init = false;
+let restart = false;
 
 
 
@@ -44,6 +47,8 @@ function shuffle(array) {
     return array;
 }
 
+
+
 /*REINICIA O JOGO*/
 function start() {
 	cards = shuffle(cards);
@@ -53,25 +58,49 @@ function start() {
 			$('.deck').append(item);
 		});
 	}
+	t1 = performance.now();
+	/*ZERANDO VARIAVEIS*/
+	y = ""
+	carta1 = "";
+	carta2 = "";
+	time = 0;
+	clicks = 0;
+	estrela = 0;
+	segundos = 0;
+	minutos = 0;
+	init = false;
+	restart = true;
+	matches = 0;
+	/*FECHA O MODAL*/
+	$('.modal').css('display','none');
+	
+	/*ZERA AS INFORMAÇÕES*/
+	$('.stars li').remove();
+	$('.moves').html(estrela+" Estrelas");
+	$('.clicks').html(clicks+" Cliques");
+
+
 }
 
 
 /*APLICA AS CLASSES PARA ABRIR AS CARTAS SELECIONADAS*/
 function openCart () {
-	time = performance.now();
+	
 	if(!$(this).hasClass('match')){
-		clicks = clicks+1;
-		if (y<1){
+		if ((y==0) & (!$('.card').hasClass('open'))){
 			carta1 = $(this);
 			carta1.addClass('open show');
 			y++;
-		}else if(!$(this).hasClass('open show')) {
+			clicks++;
+		}else if((y==1)&(!$(this).hasClass('open show'))) {
 			carta2 = $(this);
 			carta2.addClass('open show');
-			y = 0;
+			y++;
+			clicks++;
 			checkCart();
 		}
 	}
+	$('.score-panel .clicks').html(clicks+' Cliques');
 }
 
 /*VERIFICA SE AS CARTAS SÃO IGUAIS E APLICA A CLASSE MATCH*/
@@ -83,26 +112,26 @@ function checkCart () {
 			carta1.removeClass('open show');
 			carta2.addClass('match');
 			carta2.removeClass('open show');
-			matches = matches+1;
+			matches++;
 		}else {
 			setTimeout(function() { 
 				carta1.removeClass('open show');
 				carta2.removeClass('open show');
-			}, 500);
+			}, 800);
 		}
 	}
 	
 	if(matches == 8) {
 		result();
 	}
+	y = 0;
 }
 
 /*VERIFICA SE TODOS OS PARES FORAM ENCONTRADOS E CALCULA O RESULTADO (CLIQUES, TEMPO, E ESTRELAS) EXIBINDO O MODAL*/
 function result () {
-	pontos = (time/clicks).toFixed(2);
-	if(pontos <= 1000.00) {
+	if(clicks == 16) {
 		estrela = 3;
-	}else if(pontos <= 1100.00){
+	}else if(clicks <= 22){
 		estrela = 2;
 	}else{
 		estrela = 1;
@@ -113,17 +142,41 @@ function result () {
 		$('.stars').append('<li><i class="fa fa-star"></i></li>');
 	}
 
+	time = performance.now() - t0;
+
 	var calc = ((time/1000)%60).toFixed(0);
-	minutos  = ((time/60000)%60).toFixed(0); 
+	if (restart == true) {
+		minutos  = ((((time/60000)%60).toFixed(0)) - 1); 
+	}else {
+		minutos  = ((time/60000)%60).toFixed(0); 
+	}
+	
 	segundos = (calc%60);
 
+	console.log(time);
+
+	$('.moves').html(estrela);
 	$('.timer').html("Tempo: "+minutos+" minutos e "+segundos+" segundos"); 
 	$('.clicks').html("Total de cliques: "+clicks);
 	$('.modal').slideDown();
 }
 
+function initGame () {
+	if((init != true) & (restart == false)) {
+		t0 = performance.now();
+	}else if((init != true) & (restart == true)) {
+		t0 = performance.now();
+		console.log('restart true');
+	}
+	init = true;
+}
+
 /*CHAMA A FUNÇÃO openCart QUANDO UMA CARTA É CLICADA*/
 $('.card').click(openCart);
+$('.card').click(initGame);
+
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
