@@ -22,6 +22,8 @@ for (var i=0; i<=cont.length; i++) {
 }
 let init = false;
 let restart = false;
+let intervalo;
+let unmatched = 0;
 
 
 
@@ -79,6 +81,10 @@ function start() {
 	$('.stars li').remove();
 	$('.moves').html(estrela+" Estrelas");
 	$('.clicks').html(clicks+" Cliques");
+	$('#segundo').html('00s');
+	$('#minuto').html('00m');
+	$('#hora').html('00h');
+	window.clearInterval(intervalo);
 
 
 }
@@ -118,6 +124,7 @@ function checkCart () {
 			setTimeout(function() { 
 				carta1.removeClass('open show');
 				carta2.removeClass('open show');
+				unmatched++;
 			}, 800);
 		}
 	}
@@ -126,6 +133,16 @@ function checkCart () {
 		result();
 	}
 	y = 0;
+	removeEstrelas();
+}
+
+function removeEstrelas () {
+	if(unmatched == 3) {
+		$('.stars li:eq(0)').remove();
+	}else if(unmatched == 6){
+		$('.stars li:eq(0)').remove();
+
+	}
 }
 
 /*VERIFICA SE TODOS OS PARES FORAM ENCONTRADOS E CALCULA O RESULTADO (CLIQUES, TEMPO, E ESTRELAS) EXIBINDO O MODAL*/
@@ -158,10 +175,40 @@ function result () {
 
 function initGame () {
 	if(init != true) {
-		t0 = performance.now();
+		var s = 1;
+		var m = 0;
+		var h = 0;
+		intervalo = window.setInterval(function() {
+			if (s == 60) { 
+				m++; 
+				s = 0;
+			}
+			if (m == 60) { 
+				h++; 
+				s = 0; 
+				m = 0; 
+			}
+			if (h < 10) {
+				$('#hora').html('0'+h+'h'); 
+			}else {
+				$('#hora').html(h+'h');
+			} 
+			if (s < 10) {
+				$('#segundo').html('0'+s+'s'); 
+			}else {
+				$('#segundo').html(s+ 's');
+			}
+			if (m < 10) {
+				$('#minuto').html('0'+m+'m');
+			}else {
+				$('#minuto').html(m+'m');
+			}		
+			s++;
+		},1000);
 	}
 	init = true;
 }
+
 
 /*CHAMA A FUNÇÃO openCart QUANDO UMA CARTA É CLICADA*/
 $('.card').click(openCart);

@@ -126,7 +126,7 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: auto;
     margin-bottom: 10px;
 }
 
@@ -151,6 +151,10 @@ h1 {
     cursor: pointer;
     background: #294552;
     color: #fff;
+}
+
+.cronometro {
+    display: inline-block;
 }
 
 .restart {
