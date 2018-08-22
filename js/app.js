@@ -3,17 +3,14 @@
  */
 
 /*VARIAVEIS*/
-let t0 = 0;
-let t1 = 0;
 let y = ""
 let carta1 = "";
 let carta2 = "";
-let time = 0;
 let clicks = 0;
 let matches = 0;
-var estrela = 0;
-let segundos = 0;
-let minutos = 0;
+let segundo = 0;
+let minuto = 0;
+let hora = 0;
 let cards = [];
 let deck = document.querySelector('.deck')
 cont = deck.childNodes;
@@ -60,33 +57,31 @@ function start() {
 			$('.deck').append(item);
 		});
 	}
-	t1 = performance.now();
+
 	/*ZERANDO VARIAVEIS*/
 	y = ""
 	carta1 = "";
 	carta2 = "";
-	t0 = 0;
-	time = 0;
 	clicks = 0;
-	estrela = 0;
-	segundos = 0;
-	minutos = 0;
 	init = false;
 	restart = true;
 	matches = 0;
 	/*FECHA O MODAL*/
 	$('.modal').css('display','none');
+
+	/*VOLTANDO ESTRELAS AO ESTADO ORIGINAL*/
 	
-	/*ZERA AS INFORMAÇÕES*/
 	$('.stars li').remove();
-	$('.moves').html(estrela+" Estrelas");
+	for(var i=0; i < 3; i++){
+		$('.score-panel ul').append('<li><i class="fa fa-star"></i></li>');
+	}
+	
+	/*ZERANDO AS INFORMAÇÕES*/
 	$('.clicks').html(clicks+" Cliques");
 	$('#segundo').html('00s');
 	$('#minuto').html('00m');
 	$('#hora').html('00h');
 	window.clearInterval(intervalo);
-
-
 }
 
 
@@ -125,6 +120,7 @@ function checkCart () {
 				carta1.removeClass('open show');
 				carta2.removeClass('open show');
 				unmatched++;
+				removeEstrelas();
 			}, 800);
 		}
 	}
@@ -133,13 +129,12 @@ function checkCart () {
 		result();
 	}
 	y = 0;
-	removeEstrelas();
 }
 
 function removeEstrelas () {
-	if(unmatched == 3) {
+	if(unmatched === 3) {
 		$('.stars li:eq(0)').remove();
-	}else if(unmatched == 6){
+	}else if(unmatched === 6){
 		$('.stars li:eq(0)').remove();
 
 	}
@@ -147,32 +142,18 @@ function removeEstrelas () {
 
 /*VERIFICA SE TODOS OS PARES FORAM ENCONTRADOS E CALCULA O RESULTADO (CLIQUES, TEMPO, E ESTRELAS) EXIBINDO O MODAL*/
 function result () {
-	if(clicks == 16) {
-		estrela = 3;
-	}else if(clicks <= 22){
-		estrela = 2;
-	}else{
-		estrela = 1;
-	}
-
-	for(var i=0; i < estrela; i++){
-		console.log(estrela);
-		$('.stars').append('<li><i class="fa fa-star"></i></li>');
-	}
-
-	time = performance.now() - t0;
-
-	var calc = ((time/1000)%60).toFixed(0);
-	minutos  = ((time/60000)%60).toFixed(0); 
-	segundos = (calc%60);
-
-
-	$('.moves').html(estrela);
-	$('.timer').html("Tempo: "+minutos+" minutos e "+segundos+" segundos"); 
+	window.clearInterval(intervalo);
+	segundo = $('#segundo').html();
+	minuto = $('#minuto').html();
+	hora = $('#hora').html();
+	
+	$('.timer').html("Tempo: "+hora+" "+minuto+" "+segundo); 
 	$('.clicks').html("Total de cliques: "+clicks);
 	$('.modal').slideDown();
 }
 
+
+/*INICIA O CRONOMETRO*/
 function initGame () {
 	if(init != true) {
 		var s = 1;
